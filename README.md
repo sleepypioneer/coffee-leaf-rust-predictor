@@ -16,7 +16,7 @@ This project focuses on a classification problem, predicting if a image shows a 
 Where to find the files for evaluation :)
 
 - 📂 **Analysis**
-    I ran one notebook in Google Colab to do the analysis and model selection. A copy of it is in the repository [here]()
+    I ran one notebook in Google Colab to do the analysis and model selection so I could leverage the use of a GPU. A copy of it is in the repository [here](analysis/notebooks/leaf_rust_detection_exploration.ipynb).
 
 ## Running the project ▶️
 
