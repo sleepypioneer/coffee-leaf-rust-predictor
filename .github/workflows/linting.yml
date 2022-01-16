@@ -1,0 +1,22 @@
+name: Lint
+on: [push, pull_request]
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python 3.9.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.9.7"
+
+      - uses: actions/checkout@v1
+
+      - name: Lint app with flake
+        run: |
+          pip install flake8
+          flake8 app
+      - name: Lint app with black
+        run: |
+          pip install black
+          black app
