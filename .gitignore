@@ -1,6 +1,17 @@
 # Data files
 ./app/data
 
+
+# IDE
+.vscode
+
+# Cache
+**.pyc
+
+# Models
+**.tflite
+**.h5
+
 # Distribution / packaging
 .Python
 build/

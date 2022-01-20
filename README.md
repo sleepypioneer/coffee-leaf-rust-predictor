@@ -28,15 +28,48 @@ I advise using a virtual environment for running this project, below are instruc
 
 ```sh
 # create virtual environment
-python3 -m venv coffee-quality
+python3 -m venv venv
 
 # start the virtual environment
-source coffee-quality/bin/activate
+source venv/bin/activate
 
 # install virtual environment depencies for linting locally and
 # pipenv required for the app's dependency management
 pip install -r requirements.txt
 ```
+
+### Running the app locally
+
+#### Run the lambda server
+
+First build the model image and lambda image sequentially
+
+```sh
+docker build \
+    -f ./src/lambda/Dockerfile \
+    -t coffee-leaf-rust-model \
+    .
+```
+
+Next run the lambda container so it can be accessed locally.
+
+```sh
+docker run -p 8080:8080 coffee-leaf-rust-model
+```
+
+#### Run the streamlit frontend app
+
+Now you have the backend running, inside the virtual environment run the following command to run the streamlit app with live reload on save.
+
+```sh
+# This command needs to be run inside the src/app/ directory
+# To change into the src/app/ directory
+cd src/app
+streamlit run --server.runOnSave=True main.py
+
+```
+
+You can now view in your browser the app on the provided local url :D
 
 ## Data 💽
 

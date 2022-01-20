@@ -1,18 +1,12 @@
 from datetime import datetime
 import pathlib
-from typing import Any, List
+from typing import Any
 
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
-import tensorflow as tf
 from tensorflow import keras
 
 from tensorflow.keras.applications.xception import Xception
 from tensorflow.keras.applications.xception import preprocess_input
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.preprocessing.image import load_img
 
 batch_size = 32
 img_height = 150
@@ -87,11 +81,6 @@ def generate_train_val_ds(data_dir: str) -> Any:
     return train_ds, val_ds
 
 
-def convert_to_tf_lite(final_model):
-    converter = tf.lite.TFLiteConverter.from_keras_model(final_model)
-    return converter.convert()
-
-
 if __name__ == "__main__":
     input_size=299
 
@@ -106,16 +95,9 @@ if __name__ == "__main__":
 
     final_model.fit(train_ds, epochs=10, validation_data=val_ds)
 
-    tflite_model = convert_to_tf_lite(final_model)
-
     version = "1"
     timestamp = datetime.utcnow().strftime("%Y-%m-%d_%H:%M")
     model_name = f"xception_v{version}_{timestamp}"
 
     final_model.save(f"{model_name}.h5")
     print("Model saved")
-
-    with open(f"data/{model_name}.tflite", "wb") as f_out:
-        f_out.write(tflite_model)
-    
-    print("Model saved as tf lite model")
