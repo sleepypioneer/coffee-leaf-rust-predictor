@@ -12,11 +12,9 @@ def fetch_predictions(img_url: str)-> str:
     print("fetching predictions....")
     data = {"url": img_url}
     resp = requests.post(LAMBDA_URL, json=data)
-    print(resp)
-    
-    json_resp = resp.json()
-    print(json_resp)
-    return json_resp
+    if resp.status_code != 200:
+        return "No prediction given"
+    return resp.json()
     
 
 def app() -> None:
@@ -44,19 +42,16 @@ def app() -> None:
 
     # Run predictions
     if st.button("Predict if this leaf has rust"):
-        prediction = fetch_predictions(img_1_path)
-        survival = 'Other disease'
-        if prediction == [1]:
-            survival = 'Rust'
-        st.title(f'Prediction: {survival}')
+        prediction = fetch_predictions("https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/514.jpg")
+        st.title(f'Prediction: {prediction}')
 
-    img_2_path = os.path.join(CURR_DIR, 'static/imgs/1643.jpg')
+    img_2_path = os.path.join(CURR_DIR, 'static/imgs/1120.jpg')
     image_2 = Image.open(img_2_path)
     st.image(image_2, caption="coffee leaf", use_column_width=True)
 
     # Run predictions
     if st.button("Predict if the leaf has rust"):
-        prediction = fetch_predictions(img_2_path)
+        prediction = fetch_predictions("https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1120.jpg")
         st.title(f'Prediction: {prediction}')
 
 
