@@ -1,10 +1,10 @@
+import os
 from typing import Any
+import typer
 
 from PIL import Image
 import requests
 import streamlit as st
-import typer
-import os
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 ENV = os.getenv("ENV")
