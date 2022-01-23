@@ -7,8 +7,8 @@ import typer
 import os
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-LAMBDA_URL = os.getenv("LAMBDA_URL")
 ENV = os.getenv("ENV")
+LAMBDA_URL = os.getenv("LAMBDA_URL") if ENV == "dev" else st.secrets["LAMBDA_URL"]
 
 
 def fetch_predictions(img_url: str) -> Any:

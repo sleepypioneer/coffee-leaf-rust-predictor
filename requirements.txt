@@ -2,7 +2,7 @@ black==21.9b0
 flake8==4.0.1
 Pillow==8.0.1
 pipenv==2021.5.29
-streamlit==0.71.0
+streamlit==1.4.0
 tensorflow==2.7.0
 typer==0.3.2
 scipy==1.7.3
