@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coffee-leaf-rust-app
+spec:
+  selector:
+    matchLabels:
+      app: coffee-leaf-rust-app
+  template:
+    metadata:
+      labels:
+        app: coffee-leaf-rust-app
+    spec:
+      containers:
+      - name: coffee-leaf-rust-app
+        image: coffee-leaf-rust-app
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8501

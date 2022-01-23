@@ -1,6 +1,6 @@
 # Coffee Leaf Rust Predictor
 
-This repository was created as part of the [Machine Learning Bootcamp](https://github.com/alexeygrigorev/mlbookcamp-code/tree/master/course-zoomcamp) by [Alexey Grigorev](https://github.com/alexeygrigorev). This project has been submitted as the midterm project for the course.
+This repository was created as part of the [Machine Learning Bootcamp](https://github.com/alexeygrigorev/mlbookcamp-code/tree/master/course-zoomcamp) by [Alexey Grigorev](https://github.com/alexeygrigorev). This project has been submitted as the final capstone (3rd) project for the course.
 
 I chose this dataset as before working as a software engineer I was a coffee roaster so I have pre existing domain knowledge and a passion for coffee ☕ If you notice any mistakes/ improvements to the code feel free to open an issue 💖
 
@@ -10,6 +10,9 @@ I chose this dataset as before working as a software engineer I was a coffee roa
 [Hemileia vastatrix](https://en.wikipedia.org/wiki/Hemileia_vastatrix) a fungus which causes coffee leaf rust disease. This disease which reduces a plants ability to derive energy through photosynthesis, is extremely damaging to economics built on coffee cultivation as it can wipe out whole crops. The disease can be identified by the spores which cover the plants leaves.
 
 This project focuses on a classification problem, predicting if a image shows a leaf with rust disease or another disease, however with more data it would be interesting to compare healthy leaves and build a multi classifier for all the coffee leaf diseases with images available.
+
+To solve this problem I used the techniques learnt during the course for deep learning. I trained my model using tensorflow using the base model Xception, I tuned several of the parameters to find the most accurate final model. After the final training I converted it to Tensorflow lite so that I could run the model in a lightweight Docker container uploaded to AWS ECR and deployed as a AWS Lambda function. This function can be invoked by calling it at the associated API Gateway. Details for navigating the repository and how it was deployed can be found below :)
+
 
 ## Navigating the project repository 🗂️
 
@@ -40,7 +43,15 @@ Where to find the files for evaluation :)
 
     The app can be viewed on streamlit [here]]( https://share.streamlit.io/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/main.py).
 
-    You can read more how I went around deploying this all [here](deployment.md).
+    You can read more how I went around deploying the above [here](deployment.md).
+
+    I also wrote [deployment.yaml](./src/streamlit_app/deployment.yaml) and [service.yaml](./src/streamlit_app/service.yaml) files for deploying the Streamlit app to Kubernetes, although this is not required for the deployment to the streamlit servers, you could run the following commands inside the `./src/streamlit_app` directory to deploy it and create a service for it:
+
+    ```sh
+    kubectl apply -f deployment.yaml
+    kubectl apply -f service.yaml
+    ```
+
 
 ## Running the project ▶️
 
