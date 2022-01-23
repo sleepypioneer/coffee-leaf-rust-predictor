@@ -15,8 +15,8 @@ jobs:
       - name: Lint app with flake
         run: |
           pip install flake8
-          flake8 app
+          flake8 src
       - name: Lint app with black
         run: |
           pip install black
-          black app
+           black --line-length 100 src

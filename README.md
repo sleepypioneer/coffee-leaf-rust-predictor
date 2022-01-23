@@ -127,5 +127,3 @@ The project is linted with [Black](https://pypi.org/project/black/) and [Flake8]
 ## Github actions 🎬
 
 When pushing code to github it will run actions for linting the code, you can find, add and update these actions in [.github/workflows](./.github/workflows).
-
-## Deployment 

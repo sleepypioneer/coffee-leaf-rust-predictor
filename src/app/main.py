@@ -46,14 +46,17 @@ def app() -> None:
     st.info(
         """
         Hemileia vastatrix a fungus which causes coffee leaf rust disease.
-        This disease which reduces a plants ability to derive energy through photosynthesis, is extremely damaging to 
-        economics built on coffee cultivation as it can wipe out whole crops. 
+        This disease which reduces a plants ability to derive energy through
+        photosynthesis, it is extremely damaging to economics built on coffee
+        cultivation as it can wipe out whole crops.
         The disease can be identified by the spores which cover the plants leaves.
         \n\n
-        I trained a model on a dataset of images of coffee leaves with different diseases to predict if the image contained a
-        leaf with Coffee rust disease or not (it may have a different disease present).
+        I trained a model on a dataset of images of coffee leaves with different diseases
+        to predict if the image contained a leaf with Coffee rust disease or not
+        (it may have a different disease present).
         \n\n
-        To demonstrate the model you can chose one of the images of leaves below and click it's corresponding button to get a prediction for it.
+        To demonstrate the model you can chose one of the images of leaves below and
+        click it's corresponding button to get a prediction for it.
         """
     )
 
@@ -64,7 +67,7 @@ def app() -> None:
     # Run predictions
     if st.button("Predict if this leaf has rust"):
         prediction = predict(
-            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1.jpg"
+            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1.jpg"  # noqa
         )
         st.title(f"Prediction: {prediction}")
 
@@ -75,7 +78,7 @@ def app() -> None:
     # Run predictions
     if st.button("Predict if the leaf has rust"):
         prediction = predict(
-            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1643.jpg"
+            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1643.jpg"  # noqa
         )
         st.title(f"Prediction: {prediction}")
 
