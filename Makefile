@@ -21,14 +21,14 @@ convert_model:
 	python ./scripts/convert.py --model-name $(MODEL_NAME)
 
 
-prep_model: train_model convert_model
-	echo "Model trained: $(MODEL_NAME)"
-
-
 move_model:
 	# moves model to lambda directory
 	mv ./models/$(MODEL_NAME).tflite ./src/lambda
 	echo "Model moved $(MODEL_NAME)"
+
+
+prep_model: train_model convert_model move_model
+	echo "Model trained: $(MODEL_NAME)"
 
 
 build_lamdba_function:
@@ -39,10 +39,15 @@ build_lamdba_function:
 		.
 
 
-run_lambda_server:
+run_lambda_server: build_lamdba_function
 	docker run -p 8080:8080 coffee-leaf-rust-model
 
 
 run_app:
-	cd src/app && streamlit run --server.runOnSave=True main.py
+	cd src/app && export LAMBDA_URL=http://localhost:8080/2015-03-31/functions/function/invocations ENV=dev \
+	&& streamlit run --server.runOnSave=True main.py
 
+
+run_app_prod:
+	cd src/app && export LAMBDA_URL=https://f7avzh1qu0.execute-api.eu-central-1.amazonaws.com/default/coffee-leaf-rust-prediction \
+	&& streamlit run --server.runOnSave=True main.py

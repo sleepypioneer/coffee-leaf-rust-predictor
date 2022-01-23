@@ -1,3 +1,5 @@
+from typing import Any
+
 from PIL import Image
 import requests
 import streamlit as st
@@ -5,21 +7,41 @@ import typer
 import os
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-LAMBDA_URL = 'http://localhost:8080/2015-03-31/functions/function/invocations'
+LAMBDA_URL = os.getenv("LAMBDA_URL")
+ENV = os.getenv("ENV")
 
 
-def fetch_predictions(img_url: str)-> str:
+def fetch_predictions(img_url: str) -> Any:
     print("fetching predictions....")
-    data = {"url": img_url}
-    resp = requests.post(LAMBDA_URL, json=data)
+    if ENV == "dev":
+        # the dev local version takes the url from the body
+        data = {"url": img_url}
+        resp = requests.post(LAMBDA_URL, json=data)
+    else:
+        # the prod API gateway extracts the url from the param
+        resp = requests.post(f"{LAMBDA_URL}?url={img_url}")
+    print(resp)
     if resp.status_code != 200:
         return "No prediction given"
     return resp.json()
-    
+
+
+def predict(img_url: str) -> str:
+    result = fetch_predictions(img_url)
+    print(result)
+    other = float(result["other"])
+    rust = float(result["rust"])
+
+    print(other, rust)
+    if other > rust:
+        return "other"
+    else:
+        return "rust"
+
 
 def app() -> None:
     # Title and info
-    st.title('Coffee Leaf Rust Identifier:')
+    st.title("Coffee Leaf Rust Identifier:")
 
     st.info(
         """
@@ -32,27 +54,30 @@ def app() -> None:
         leaf with Coffee rust disease or not (it may have a different disease present).
         \n\n
         To demonstrate the model you can chose one of the images of leaves below and click it's corresponding button to get a prediction for it.
-        """)
-    
-    
-    
-    img_1_path = os.path.join(CURR_DIR, 'static/imgs/514.jpg')
+        """
+    )
+
+    img_1_path = os.path.join(CURR_DIR, "static/imgs/1.jpg")
     image_1 = Image.open(img_1_path)
     st.image(image_1, caption="coffee leaf", use_column_width=True)
 
     # Run predictions
     if st.button("Predict if this leaf has rust"):
-        prediction = fetch_predictions("https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/514.jpg")
-        st.title(f'Prediction: {prediction}')
+        prediction = predict(
+            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1.jpg"
+        )
+        st.title(f"Prediction: {prediction}")
 
-    img_2_path = os.path.join(CURR_DIR, 'static/imgs/1120.jpg')
+    img_2_path = os.path.join(CURR_DIR, "static/imgs/1643.jpg")
     image_2 = Image.open(img_2_path)
     st.image(image_2, caption="coffee leaf", use_column_width=True)
 
     # Run predictions
     if st.button("Predict if the leaf has rust"):
-        prediction = fetch_predictions("https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1120.jpg")
-        st.title(f'Prediction: {prediction}')
+        prediction = predict(
+            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1643.jpg"
+        )
+        st.title(f"Prediction: {prediction}")
 
 
 if __name__ == "__main__":
