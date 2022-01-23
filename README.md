@@ -15,8 +15,32 @@ This project focuses on a classification problem, predicting if a image shows a 
 
 Where to find the files for evaluation :)
 
-- 📂 **Analysis**
+- 📂 **Analysis**  
     I ran one notebook in Google Colab to do the analysis and model selection so I could leverage the use of a GPU. A copy of it is in the repository [here](analysis/notebooks/leaf_rust_detection_exploration.ipynb).
+
+- 📂 **Scripts**  
+    [train.py](./scripts/train.py) runs the training for the final model. [convert.py](./scripts/convert.py) converts the model to a tflite model so it can packaged in a docker container. Predictions are run within a lambda handler, the predict function can be found within the [lambda.py](./src/lambda/lambda.py) file.
+
+- 📂 **Deployment**  
+    The lambda function is deployed on [AWS Lambda](https://aws.amazon.com/lambda/) with an [API Gateway](https://aws.amazon.com/api-gateway/) sat in front of it. This end point will remain available until the end of the evaluation period.
+    
+    
+    *Example request to the Lambda Gateway API:*
+
+    ```sh
+    curl -X POST https://f7avzh1qu0.execute-api.eu-central-1.amazonaws.com/default/coffee-leaf-rust-prediction?url=https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1643.jpg
+
+    ```
+
+    *Example response*
+
+    ```
+    {"other": "-22.049458", "rust": "5.235355"}
+    ```
+
+    The app can be viewed on streamlit here: []()
+
+    You can read more how I went around deploying this [here](deployment.md).
 
 ## Running the project ▶️
 
@@ -38,22 +62,45 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Data 💽
+
+The data used for this project is gathered from [Kaggle](https://www.kaggle.com/badasstechie/coffee-leaf-diseases) and has the [CC BY-SA 3.0 License](https://creativecommons.org/licenses/by-sa/3.0/). It consists of 1700+ images of coffee leaves with various diseases. Has annotations and image masks to eliminate backgrounds.
+
+Download this data (including the three CSVs) and put it in to a `./data` directory, subsequent scripts will look for it there.
+
+### Preparing the data
+
+The `data_preparation.py` script will get the datasets ready for training the model on it. You can run it and the clean up with the following make commands (see inside the `.Makefile` to see in more detail the commands that run to do this):
+
+```sh
+make prep_data
+make clean_up
+```
+
+### Training the model and converting a Tensorflow Lite
+
+To run the training script and convert the mdoel to a TFLite model to be used in the lambda service there are two scripts inside `./scripts`: `train.py` and `convert.py` these can be ran together with the make command:
+
+```sh
+make prep_model
+```
+
+The final model will be saved with a timestamp in its name in the `.models` directory.
+
 ### Running the app locally
 
 #### Run the lambda server
 
-First build the model image and lambda image sequentially
+To build and run the lambda server I use the following docker commands, for ease I have also put these into Make targets so they can easily be run with one command `make run_lambda_server`.
 
 ```sh
+cd src/lambda && \
 docker build \
-    -f ./src/lambda/Dockerfile \
+    --build-arg model_name=$(MODEL_NAME).tflite \
     -t coffee-leaf-rust-model \
     .
-```
 
-Next run the lambda container so it can be accessed locally.
 
-```sh
 docker run -p 8080:8080 coffee-leaf-rust-model
 ```
 
@@ -69,11 +116,10 @@ streamlit run --server.runOnSave=True main.py
 
 ```
 
+This has also been put behind the Marke target: `make run_app`.
+
 You can now view in your browser the app on the provided local url :D
 
-## Data 💽
-
-The data used for this project is gathered from [Kaggle](https://www.kaggle.com/badasstechie/coffee-leaf-diseases) and has the [CC BY-SA 3.0 License](https://creativecommons.org/licenses/by-sa/3.0/). It consists of 1700+ images of coffee leaves with various diseases. Has annotations and image masks to eliminate backgrounds.
 
 ## Linting your code ✔️
 The project is linted with [Black](https://pypi.org/project/black/) and [Flake8](https://pypi.org/project/flake8/) and it is reccomended running these both locally (they are already installed inside the virtual environment following the instructions above) before pushing code as they are enforced in the github actions (see below).
@@ -81,3 +127,5 @@ The project is linted with [Black](https://pypi.org/project/black/) and [Flake8]
 ## Github actions 🎬
 
 When pushing code to github it will run actions for linting the code, you can find, add and update these actions in [.github/workflows](./.github/workflows).
+
+## Deployment 
