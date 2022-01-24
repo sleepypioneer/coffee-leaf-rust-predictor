@@ -120,9 +120,9 @@ docker run -p 8080:8080 coffee-leaf-rust-model
 Now you have the backend running, inside the virtual environment run the following command to run the streamlit app with live reload on save.
 
 ```sh
-# This command needs to be run inside the src/app/ directory
+# This command needs to be run inside the src/streamlit_app/ directory
 # To change into the src/app/ directory
-cd src/app
+cd src/streamlit_app
 streamlit run --server.runOnSave=True main.py
 
 ```
