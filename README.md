@@ -41,7 +41,7 @@ Where to find the files for evaluation :)
     {"other": "-22.049458", "rust": "5.235355"}
     ```
 
-    The app can be viewed on streamlit [here]]( https://share.streamlit.io/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/main.py).
+    The app can be viewed on streamlit [here]]( https://share.streamlit.io/sleepypioneer/coffee-leaf-rust-predictor/main/src/stream_app/main.py).
 
     You can read more how I went around deploying the above [here](deployment.md).
 

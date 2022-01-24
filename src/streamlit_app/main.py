@@ -67,7 +67,7 @@ def app() -> None:
     # Run predictions
     if st.button("Predict if this leaf has rust"):
         prediction = predict(
-            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1.jpg"  # noqa
+            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/streamlit_app/static/imgs/1.jpg"  # noqa
         )
         st.title(f"Prediction: {prediction}")
 
@@ -78,7 +78,7 @@ def app() -> None:
     # Run predictions
     if st.button("Predict if the leaf has rust"):
         prediction = predict(
-            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1643.jpg"  # noqa
+            "https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/streamlit_app/static/imgs/1643.jpg"  # noqa
         )
         st.title(f"Prediction: {prediction}")
 
