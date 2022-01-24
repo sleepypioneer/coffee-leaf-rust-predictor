@@ -31,7 +31,7 @@ Where to find the files for evaluation :)
     *Example request to the Lambda Gateway API:*
 
     ```sh
-    curl -X POST https://f7avzh1qu0.execute-api.eu-central-1.amazonaws.com/default/coffee-leaf-rust-prediction?url=https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/app/static/imgs/1643.jpg
+    curl -X POST https://f7avzh1qu0.execute-api.eu-central-1.amazonaws.com/default/coffee-leaf-rust-prediction?url=https://raw.githubusercontent.com/sleepypioneer/coffee-leaf-rust-predictor/main/src/streamlit_app/static/imgs/1643.jpg
 
     ```
 
